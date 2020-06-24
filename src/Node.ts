@@ -1477,11 +1477,18 @@ export abstract class Node<Config extends NodeConfig = NodeConfig> {
    * convert Node into an object for serialization.  Returns an object.
    * @method
    * @name Konva.Node#toObject
+   * @param {Function} [attributesGetter]
    * @returns {Object}
+   * @example
+   * node.toObject(function(node) {
+   *   return note.getAttrs();
+   * });
    */
-  toObject() {
+  toObject(attributesGetter?: Function) {
     var obj = {} as any,
-      attrs = this.getAttrs(),
+      attrs = attributesGetter
+        ? { ...attributesGetter(this), ...this.getAttrs() }
+        : this.getAttrs(),
       key,
       val,
       getter,
@@ -1490,7 +1497,6 @@ export abstract class Node<Config extends NodeConfig = NodeConfig> {
 
     obj.attrs = {};
 
-    
     if (attrs.image) {
       obj.attrs.imageSource = attrs.image.getAttribute('src');
     }
@@ -1504,15 +1510,7 @@ export abstract class Node<Config extends NodeConfig = NodeConfig> {
       if (nonPlainObject) {
         continue;
       }
-      getter = typeof this[key] === 'function' && this[key];
-      // remove attr value so that we can extract the default value from the getter
-      delete attrs[key];
-      defaultValue = getter ? getter.call(this) : null;
-      // restore attr value
-      attrs[key] = val;
-      if (defaultValue !== val) {
-        obj.attrs[key] = val;
-      }
+      obj.attrs[key] = val;
     }
 
     obj.className = this.getClassName();

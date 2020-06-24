@@ -270,7 +270,7 @@ export abstract class Container<ChildType extends Node> extends Node<
     var len = children.length;
     for (var n = 0; n < len; n++) {
       var child = children[n];
-      obj.children.push(child.toObject());
+      obj.children.push(child.toObject.apply(child, arguments));
     }
 
     return obj;
