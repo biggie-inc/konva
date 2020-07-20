@@ -209,6 +209,7 @@ export abstract class Node<Config extends NodeConfig = NodeConfig> {
   nodeType!: string;
   className!: string;
   _dragEventId: number | null = null;
+  metaFields?: Object;
 
   constructor(config?: Config) {
     this.setAttrs(config);
@@ -1496,6 +1497,7 @@ export abstract class Node<Config extends NodeConfig = NodeConfig> {
       nonPlainObject;
 
     obj.attrs = {};
+    obj.metaFields = this.metaFields;
 
     if (attrs.image) {
       obj.attrs.imageSource = attrs.image.getAttribute('src');
@@ -2589,6 +2591,8 @@ export abstract class Node<Config extends NodeConfig = NodeConfig> {
         no.add(Node._createNode(children[n]));
       }
     }
+
+    no.metaFields = obj.metaFields;
 
     return no;
   }

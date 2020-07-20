@@ -8,7 +8,7 @@
    * Konva JavaScript Framework v7.0.0
    * http://konvajs.org/
    * Licensed under the MIT
-   * Date: Wed Jun 24 2020
+   * Date: Mon Jul 20 2020
    *
    * Original work Copyright (C) 2011 - 2013 by Eric Rowell (KineticJS)
    * Modified work Copyright (C) 2014 - present by Anton Lavrenov (Konva)
@@ -3766,6 +3766,7 @@
           var obj = {}, attrs = attributesGetter
               ? __assign(__assign({}, attributesGetter(this)), this.getAttrs()) : this.getAttrs(), key, val, nonPlainObject;
           obj.attrs = {};
+          obj.metaFields = this.metaFields;
           if (attrs.image) {
               obj.attrs.imageSource = attrs.image.getAttribute('src');
           }
@@ -4683,6 +4684,7 @@
                   no.add(Node._createNode(children[n]));
               }
           }
+          no.metaFields = obj.metaFields;
           return no;
       };
       return Node;
